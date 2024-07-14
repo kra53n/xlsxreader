@@ -35,7 +35,7 @@ func convertExcelDateToDateString(value string) (string, error) {
 	formatString := time.RFC3339
 	if floatValue == numberOfDays {
 		// We are dealing with a date, and not a datetime
-		formatString = "2006-01-02"
+		formatString = "01.02.2006"
 	}
 
 	return actualTime.Format(formatString), nil

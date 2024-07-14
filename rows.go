@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
-	"strings"
+	// "strings"
 )
 
 // rawRow represent the raw XML element for parsing a row of data.
@@ -333,21 +333,20 @@ func (x *XlsxFile) parseRow(decoder *xml.Decoder, startElement *xml.StartElement
 func (x *XlsxFile) parseRawCells(rawCells []rawCell, index int) ([]Cell, error) {
 	cells := []Cell{}
 	for _, rawCell := range rawCells {
+		var val string
 		if rawCell.Value == nil && rawCell.InlineString == nil {
-			// This cell is empty, so ignore it
-			continue
-		}
-		column := strings.Map(removeNonAlpha, rawCell.Reference)
-		val, err := x.getCellValue(rawCell)
-		if err != nil {
-			return nil, err
+			val = ""
+		} else {
+			var err error
+			val, err = x.getCellValue(rawCell)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		cells = append(cells, Cell{
-			Column: column,
-			Row:    index,
-			Value:  val,
-			Type:   x.getCellType(rawCell),
+			Row:   index,
+			Value: val,
 		})
 	}
 

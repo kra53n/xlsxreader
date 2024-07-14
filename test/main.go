@@ -3,18 +3,20 @@ package main
 import (
 	"fmt"
 
-	"github.com/thedatashed/xlsxreader"
+	"github.com/kra53n/xlsxreader"
 )
 
 func main() {
-	e, err := xlsxreader.OpenFile("./test-small.xlsx")
+	fmt.Println("start reading")
+
+	e, err := xlsxreader.OpenFile("./result.xlsx")
 	if err != nil {
 		fmt.Printf("error: %s \n", err)
 		return
 	}
 	defer e.Close()
 
-	fmt.Printf("Worksheets: %s \n", e.Sheets)
+	fmt.Printf("worksheets: %s \n", e.Sheets)
 
 	for row := range e.ReadRows(e.Sheets[0]) {
 		if row.Error != nil {
@@ -22,8 +24,10 @@ func main() {
 			return
 		}
 
-		if row.Index < 10 {
-			fmt.Printf("%+v \n", row.Cells)
-		}
+		// if row.Index < 10 {
+		// 	fmt.Printf("%+v \n", row.Cells)
+		// }
 	}
+
+	fmt.Println("end reading")
 }
